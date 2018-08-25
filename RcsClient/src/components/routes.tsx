@@ -1,14 +1,13 @@
 import * as React from 'react'
 import App from './App'
-import Clientes from './Clientes'
-import ListadoClientes from './ListadoClientes'
-import Sellers from './Sellers'
+import TestAPI from './TestAPI'
+import Login from './Login'
 
 const routes = [
   { path: '/', action: () => <App />},
-  { path: '/clientes', action: () => <Clientes />},
-  { path: '/sellers', action: () => <Sellers />},
-  { path: '/listadoClientes', action: () => <ListadoClientes />},
+  { path: '/test', action: () => <TestAPI />},
+  { path: '/login', action: () => <Login />},
+
   { path: '/otherThing', action: () => <p>otherThing</p> },
   { path: '/tasks/:id', action: () => <p>Specific task</p> }
 ]
