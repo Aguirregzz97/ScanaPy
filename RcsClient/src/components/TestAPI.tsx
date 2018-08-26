@@ -49,7 +49,7 @@ export default class TestAPI extends React.Component<Props, State> {
 
     componentDidMount() {
 
-        fetch('http://raspberrypi.mty.itesm.mx:5000/getActiveHosts')
+        fetch('http://192.168.112.37:5000/getActiveHosts')
             .then(d => d.json())
             .then(d => {
                 this.setState({
@@ -97,7 +97,7 @@ export default class TestAPI extends React.Component<Props, State> {
     }
 
     scan = (event) => {
-        let url = new URL('http://raspberrypi.mty.itesm.mx:5000/singleScan'),
+        let url = new URL('http://192.168.112.37:5000/singleScan'),
             params = { ipToScan: this.state.arrayComputer[this.state.indexSelected].ipAddress }
         Object.keys(params).forEach(key => url.searchParams.append(key, params[key]))
         fetch(String(url))
@@ -123,7 +123,7 @@ export default class TestAPI extends React.Component<Props, State> {
     render() {
         if (!this.state.arrayComputer) return (
             <div>
-                <div style={{ marginLeft: '41%', marginRight: '50%', marginTop: '40px' }}>
+                <div style={{ marginLeft: '43%', marginRight: '50%', marginTop: '40px' }}>
                     <RingLoader
                         size={250}
                         color={'#c3073f'}
@@ -137,7 +137,7 @@ export default class TestAPI extends React.Component<Props, State> {
                 <div className='row'>
                     <div style={{
                         backgroundImage: `url(${panel})`
-                        , height: '700px', width: '180px', backgroundSize: 'cover'
+                        , height: '1000px', width: '180px', backgroundSize: 'cover'
                     }}>
                         <h1 style={{ color: 'white', font: 'Montserrat', fontSize: '30px', marginTop: '10px', marginLeft: '10px' }} className='text-center'>SCANA.PY</h1>
                         <img src={logoScana} style={{ width: '140px', marginLeft: '25px' }} />
