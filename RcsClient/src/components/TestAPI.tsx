@@ -1,7 +1,6 @@
 import * as React from 'react'
 import { SpringGrid, makeResponsive } from 'react-stonecutter'
-import { ClipLoader } from 'react-spinners'
-import { css } from 'react-emotion'
+import { RingLoader } from 'react-spinners'
 
 
 
@@ -10,12 +9,6 @@ const Grid = makeResponsive(SpringGrid, { maxWidth: 1920 })
 
 const computer = require('./../assets/img/computer.png')
 
-const override = css`
-    display: block
-    margin-left: auto
-    margin-right: auto
-    border-color: red
-`
 
 type ApiState = {
     name: string
@@ -61,6 +54,12 @@ export default class TestAPI extends React.Component<Props, State> {
         })
     }
 
+    close = () => {
+        this.setState({
+            ports: null
+        })
+    }
+
     scan = (event) => {
         let url = new URL('http://192.168.1.132:5000/singleScan'),
             params = { ipToScan: this.state.arrayComputer[this.state.indexSelected].ipAddress }
@@ -78,11 +77,13 @@ export default class TestAPI extends React.Component<Props, State> {
     render() {
         if (!this.state.arrayComputer) return (
             <div>
-                <ClipLoader
-                    className={override}
-                    sizeUnit={'px'}
-                    size={250}
-                    color={'#123abc'} />
+                <div style={{ marginLeft: '42%', marginRight: '50%', marginTop: '40px' }}>
+                    <RingLoader
+                        size={250}
+                        color={'red'}
+                    />
+                </div>
+
             </div>
         )
         return (
@@ -98,7 +99,7 @@ export default class TestAPI extends React.Component<Props, State> {
                     springConfig={{ stiffness: 170, damping: 26 }}
                 >
                     {this.state.arrayComputer.map((num, index) => {
-                        return <div><a href='' onClick={this.selectComputer.bind(this, index)} data-toggle='modal' data-target='#exampleModal'><img className='computerImage' src={computer} key={index} /></a><h5 style={{ marginTop: '5px', fontSize: '16px' }} className='text-center'>{this.state.arrayComputer[index].vendor}</h5></div>
+                        return <div><a href='' onClick={this.selectComputer.bind(this, index)} data-toggle='modal' data-target='#exampleModal'><img className='computerImage' src={computer} key={index.toString()} /></a><h5 style={{ marginTop: '5px', fontSize: '16px' }} className='text-center white'>{this.state.arrayComputer[index].ipAddress}</h5></div>
                     })}
                 </Grid>
                 <div className='modal fade' id='exampleModal' role='dialog' aria-labelledby='exampleModalLabel' aria-hidden='true'>
@@ -116,9 +117,18 @@ export default class TestAPI extends React.Component<Props, State> {
                                 MacAddress: {this.state.indexSelected && this.state.arrayComputer[this.state.indexSelected].macAddress}
                                 <br />
                                 Vendor: {this.state.indexSelected && this.state.arrayComputer[this.state.indexSelected].vendor}
+                                <br />
+                                <br />
+                                {this.state.ports && this.state.ports.map((anObjectMapped, index) => {
+                                    return (
+                                        <p key={`${anObjectMapped.name}_{anObjectMapped.email}`}>
+                                            Port Number: {anObjectMapped.portNumber} <br /> Protocol: {anObjectMapped.protocolType} <br /> Service: {anObjectMapped.serviceName} <br /> State: {anObjectMapped.stateValue}
+                                        </p>
+                                    )
+                                })}
                             </div>
                             <div className='modal-footer'>
-                                <button type='button' className='btn btn-secondary' data-dismiss='modal'>Close</button>
+                                <button type='button' className='btn btn-secondary' data-dismiss='modal' onClick={this.close}>Close</button>
                                 <button type='button' className='btn btn-primary' onClick={this.scan}>Scan</button>
                             </div>
                         </div>

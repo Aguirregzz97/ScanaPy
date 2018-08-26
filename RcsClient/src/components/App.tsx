@@ -1,5 +1,4 @@
 import * as React from 'react'
-import 'bootstrap/dist/css/bootstrap.css'
 import './../assets/scss/App.scss'
 import Home from './Home'
 
