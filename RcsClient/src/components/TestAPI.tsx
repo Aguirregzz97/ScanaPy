@@ -26,51 +26,27 @@ export default class TestAPI extends React.Component<Props, State> {
         this.state = {
             dataFromAPI: null,
             indexSelected: null,
-            arrayComputer: [
-                {
-                    ip: '1',
-                    brand: 'acer'
-                },
-                {
-                    ip: '2',
-                    brand: 'apple'
-                },
-                {
-                    ip: '3',
-                    brand: 'razr'
-                },
-                {
-                    ip: '4',
-                    brand: 'asus'
-                },
-                {
-                    ip: '5',
-                    brand: 'gigabyte'
-                },
-                {
-                    ip: '6',
-                    brand: 'dell'
-                },
-                {
-                    ip: '7',
-                    brand: 'google'
-                },
-                {
-                    ip: '8',
-                    brand: 'HP'
-                },
-            ],
+            arrayComputer: null
         }
     }
 
     componentDidMount() {
-        fetch('http://192.168.1.138:000')
-            .then(d => d.json())
-            .then(d => {
-                this.setState({
-                    dataFromAPI: d
-                })
+        let url = new URL('http://192.168.1.132:5000/singleScan'),
+            params = { ipToScan: '192.168.1.138' }
+        Object.keys(params).forEach(key => url.searchParams.append(key, params[key]))
+        fetch(String(url))
+        .then(d => d.json())
+        .then(d => {
+        })
+
+        fetch('http://192.168.1.138:5000/')
+        .then(d => d.json())
+        .then(d => {
+            this.setState({
+                arrayComputer: d.addressInfo
             })
+            console.log(this.state.arrayComputer)
+        })
     }
 
     selectComputer(indexSel) {
@@ -80,7 +56,12 @@ export default class TestAPI extends React.Component<Props, State> {
     }
 
     render() {
-        if (!this.state.dataFromAPI) return (
+        if (!this.state.arrayComputer) return (
+            <div>
+                <h1>loading...</h1>
+            </div>
+        )
+        return (
             <div>
                 <div style={{ marginBottom: '20px' }} ></div>
                 <Grid
@@ -106,9 +87,11 @@ export default class TestAPI extends React.Component<Props, State> {
                                 </button>
                             </div>
                             <div className='modal-body'>
-                            ip: {this.state.indexSelected && this.state.arrayComputer[this.state.indexSelected].ip}
-                            <br/>
-                            brand: {this.state.indexSelected && this.state.arrayComputer[this.state.indexSelected].brand}
+                                IP: {this.state.indexSelected && this.state.arrayComputer[this.state.indexSelected].ipAddress}
+                                <br />
+                                MacAddress: {this.state.indexSelected && this.state.arrayComputer[this.state.indexSelected].macAddress}
+                                <br/>
+                                Vendor: {this.state.indexSelected && this.state.arrayComputer[this.state.indexSelected].vendor}
                             </div>
                             <div className='modal-footer'>
                                 <button type='button' className='btn btn-secondary' data-dismiss='modal'>Close</button>
@@ -117,12 +100,6 @@ export default class TestAPI extends React.Component<Props, State> {
                         </div>
                     </div>
                 </div>
-
-
-            </div>
-        )
-        return (
-            <div>
             </div>
         )
     }
