@@ -26,6 +26,20 @@ small {
   line-height: 1;
 }
 
+.headPC {
+  margin-top: 10px;
+}
+
+.computerImage {
+  width: 150px;
+  transition: 0.3s;
+}
+
+.computerImage:hover {
+  transform: scale(1.12);
+  cursor: pointer;
+}
+
 .form-group {
   margin-bottom: 0.5rem;
 }
